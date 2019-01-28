@@ -39,8 +39,8 @@ bintray {
             gpg { sign = true }
             mavenCentralSync {
                 sync = true
-                user = project['OSS.userName']
-                password = project['OSS.password']
+                user = project['SONATYPE.userName']
+                password = project['SONATYPE.password']
             }
         }
     }
