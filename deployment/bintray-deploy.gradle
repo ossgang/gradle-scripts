@@ -38,9 +38,9 @@ bintray {
             vcsTag = project['VCS_TAG']
             gpg { sign = true }
             mavenCentralSync {
-                sync = true
-                user = project['SONATYPE.userName']
-                password = project['SONATYPE.password']
+                sync = project.hasProperty('SONATYPE.userName') && project.hasProperty('SONATYPE.password')
+                user = project.hasProperty('SONATYPE.userName') ? project['SONATYPE.userName'] : null
+                password = project.hasProperty('SONATYPE.password') ? project['SONATYPE.password'] : null
             }
         }
     }
