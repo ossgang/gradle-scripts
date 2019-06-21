@@ -6,9 +6,8 @@ project.ext.getDeploymentVersion = {
     if (!tmpDeploymentVersion.matches("\\d+\\.\\d+\\.\\d+")) {
         throw new RuntimeException("Version is not valid. Correct format is like 1.0.2 but was " + tmpDeploymentVersion)
     }
-    String versionSuffix = project['VERSION_SUFFIX'];
-    if (versionSuffix != null) {
-        tmpDeploymentVersion += versionSuffix;
+    if (project.hasProperty['VERSION_SUFFIX']) {
+        tmpDeploymentVersion += project['VERSION_SUFFIX'];
     }
     return tmpDeploymentVersion;
 }
