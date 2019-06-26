@@ -77,7 +77,9 @@ publishing {
             version getDeploymentVersion()
             
             if (project.hasProperty('CLASSIFIER')) {
-               classifier = project['CLASSIFIER'];
+                artifact source: components.java, classifier: project['CLASSIFIER']
+            } else {
+                from components.java
             }
 
             artifact sourcesJar
@@ -89,7 +91,6 @@ publishing {
                 asNode().children().last() + pomExtraInfo
             }
 
-            from components.java
         }
     }
 }
