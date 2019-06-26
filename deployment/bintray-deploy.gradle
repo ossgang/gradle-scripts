@@ -76,23 +76,26 @@ publishing {
             artifactId project['POM.artifactId']
             version getDeploymentVersion()
             
-            if (project.hasProperty('CLASSIFIER')) {
+            def jarClassifier = System.getProperty('classifier');
+            if (jarClassifier != null) {
+                println "Using classifier '" + jarClassifier +"' for deployment";
                 artifact(jar) {
-                    classifier project['CLASSIFIER']
+                    classifier jarClassifier
                 }
             } else {
                 from components.java
             }
 
-            artifact sourcesJar
-            artifact javadocJar
+            if (!(System.getProperty('publish.jar.only') ?: false)) {
+                artifact sourcesJar
+                artifact javadocJar
 
-            pom.withXml {
-                asNode().appendNode('description', project['POM.description'])
-                asNode().appendNode('name', "${project['POM.groupId']}:${project['POM.artifactId']}")
-                asNode().children().last() + pomExtraInfo
+                pom.withXml {
+                    asNode().appendNode('description', project['POM.description'])
+                    asNode().appendNode('name', "${project['POM.groupId']}:${project['POM.artifactId']}")
+                    asNode().children().last() + pomExtraInfo
+                }
             }
-
         }
     }
 }
