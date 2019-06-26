@@ -6,6 +6,12 @@ project.ext.getDeploymentVersion = {
     if (!tmpDeploymentVersion.matches("\\d+\\.\\d+\\.\\d+")) {
         throw new RuntimeException("Version is not valid. Correct format is like 1.0.2 but was " + tmpDeploymentVersion)
     }
+    
+    def qualifier = System.getProperty('qualifier');
+    if (qualifier != null) {
+        println "Using qualifier '" + qualifier +"' for deployment";
+        tmpDeploymentVersion = tmpDeploymentVersion + "-" + qualifier;
+    }
     return tmpDeploymentVersion;
 }
 
@@ -75,26 +81,16 @@ publishing {
             groupId project['POM.groupId']
             artifactId project['POM.artifactId']
             version getDeploymentVersion()
-            
-            def jarClassifier = System.getProperty('classifier');
-            if (jarClassifier != null) {
-                println "Using classifier '" + jarClassifier +"' for deployment";
-                artifact(jar) {
-                    classifier jarClassifier
-                }
-            } else {
-                from components.java
-            }
 
-            if (!(System.getProperty('publish.jar.only') ?: false)) {
-                artifact sourcesJar
-                artifact javadocJar
+            from components.java
 
-                pom.withXml {
-                    asNode().appendNode('description', project['POM.description'])
-                    asNode().appendNode('name', "${project['POM.groupId']}:${project['POM.artifactId']}")
-                    asNode().children().last() + pomExtraInfo
-                }
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom.withXml {
+                asNode().appendNode('description', project['POM.description'])
+                asNode().appendNode('name', "${project['POM.groupId']}:${project['POM.artifactId']}")
+                asNode().children().last() + pomExtraInfo
             }
         }
     }
