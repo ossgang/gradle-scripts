@@ -77,7 +77,7 @@ publishing {
             version getDeploymentVersion()
             
             if (project.hasProperty('CLASSIFIER')) {
-               classifier project['CLASSIFIER'];
+               classifier = project['CLASSIFIER'];
             }
 
             artifact sourcesJar
