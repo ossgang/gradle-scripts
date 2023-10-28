@@ -29,7 +29,7 @@ project.ext['signing.secretKeyRingFile'] = System.getProperty("SIGNING_KEY_PATH"
 println " ok"
 
 print "Verifying version to deploy ..."
-project.ext['versionToRelease'] = getDeploymentVersion(System.getProperty('TRAVIS_TAG') ?: System.getenv('TRAVIS_TAG') ?: throwEnvSetupException("TRAVIS_TAG variable must be set to deploy"))
+project.ext['versionToRelease'] = getDeploymentVersion(System.getProperty('TRAVIS_TAG') ?: System.getenv('TRAVIS_TAG') ?: System.getProperty('CIRCLE_TAG') ?: System.getenv('CIRCLE_TAG') ?: throwEnvSetupException("TRAVIS_TAG variable must be set to deploy"))
 println " detected version is " + project.ext['versionToRelease']
 
 apply plugin: 'maven-publish'
